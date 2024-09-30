@@ -6,6 +6,13 @@
  */
 
 rootProject.name = "Tether"
+val prefix = rootProject.name.lowercase()
+sequenceOf(
+    "entities"
+).forEach {
+    include(it)
+    project(":$it").name = "$prefix-$it"
+}
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
@@ -16,6 +23,11 @@ dependencyResolutionManagement {
         create("libs") {
             // annotations: https://central.sonatype.com/artifact/org.jetbrains/annotations
             library("jetbrains.annotations", "org.jetbrains:annotations:25.0.0")
+            // testing frameworks (see tether-java convention)
+            version("mockito", "5.13.0")
+            library("mockito-core", "org.mockito", "mockito-core").versionRef("mockito")
+            library("mockito-junit-jupiter", "org.mockito", "mockito-junit-jupiter").versionRef("mockito")
+            bundle("mockito", listOf("mockito-core", "mockito-junit-jupiter"))
         }
     }
 }
