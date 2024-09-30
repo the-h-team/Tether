@@ -21,8 +21,6 @@ plugins {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            // annotations: https://central.sonatype.com/artifact/org.jetbrains/annotations
-            library("jetbrains.annotations", "org.jetbrains:annotations:25.0.0")
             // testing frameworks (see tether-java convention)
             version("mockito", "5.13.0")
             library("mockito-core", "org.mockito", "mockito-core").versionRef("mockito")
