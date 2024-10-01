@@ -11,7 +11,7 @@ import java.util.Objects;
  * @param <T> the value type
  */
 abstract class ValueImpl <T> implements Value<T> {
-    T value;
+    final T value;
 
     ValueImpl(T value) {
         this.value = value;
