@@ -1,4 +1,4 @@
-package io.github.teamsanctum;
+package io.github.teamsanctum.entities;
 
 import org.jetbrains.annotations.ApiStatus;
 
