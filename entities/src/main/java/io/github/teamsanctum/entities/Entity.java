@@ -31,10 +31,6 @@ public interface Entity extends EntityLike {
 
     /**
      * Gets a map view of the attributes of this entity.
-     * <p>
-     * Note that some {@linkplain Value Values} may block. For this, consider
-     * using
-     * {@linkplain java.util.concurrent.CompletableFuture#supplyAsync}.
      *
      * @return a map view of attributes
      * @implSpec The map view should be read-only.
