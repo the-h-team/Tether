@@ -25,7 +25,7 @@ public interface Edits {
      *
      * @return a map view of edits
      */
-    @NotNull Map<String, Supplier<@Nullable Object>> getEdits();
+    @NotNull Map<String, Supplier<? extends @Nullable Object>> getEdits();
 
     /**
      * Finalizes the edits in this utility into a staging object.
