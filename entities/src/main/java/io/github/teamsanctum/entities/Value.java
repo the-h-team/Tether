@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * @param <T> the value type
  */
 @ApiStatus.NonExtendable
-public interface Value<T> extends Supplier<T> {
+public interface Value<T> extends Supplier<@UnknownNullability T> {
     /**
      * Represents a value for a property that does not accept null.
      *
@@ -23,7 +23,7 @@ public interface Value<T> extends Supplier<T> {
      * @param <T> the property value type
      */
     @ApiStatus.NonExtendable
-    interface Required<T> extends Value<T> {
+    interface Required<T> extends Value<@NotNull T> {
         /**
          * Gets the value in this wrapper.
          *
@@ -46,7 +46,7 @@ public interface Value<T> extends Supplier<T> {
      * @param <T> the property value type
      */
     @ApiStatus.NonExtendable
-    interface OrNull<T> extends Value<T> {
+    interface OrNull<T> extends Value<@Nullable T> {
         /**
          * Gets the value in this wrapper, if any.
          *
@@ -102,18 +102,14 @@ public interface Value<T> extends Supplier<T> {
      *
      * @return true if the wrapper has a value
      */
-    default boolean isPresent() {
-        return get() != null;
-    }
+    boolean isPresent();
 
     /**
      * Checks if this wrapper does not have a value.
      *
      * @return true if the wrapper does not have a value
      */
-    default boolean isEmpty() {
-        return get() == null;
-    }
+    boolean isEmpty();
 
     /**
      * Wraps a value for a property whose values must be nonnull.
