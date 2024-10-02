@@ -58,7 +58,7 @@ class EditsTest {
                 this.map.putAll(copy.map);
             }
 
-            public Edits setName(@NotNull Value.Required<String> name) {
+            public Edits setName(@NotNull Value.Always<String> name) {
                 map.put("name", name);
                 return this;
             }
@@ -107,7 +107,7 @@ class EditsTest {
                         final TestEntity entity = (TestEntity) this.entity;
                         final String oldName = entity.name;
                         Supplier<?> name = edits.getEdits().get("name");
-                        if (name instanceof Value.Required) {
+                        if (name instanceof Value.Always) {
                             Object n = name.get();
                             if (n instanceof String) {
                                 entity.name = (String) n;

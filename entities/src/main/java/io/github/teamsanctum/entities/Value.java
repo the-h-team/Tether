@@ -17,13 +17,14 @@ import java.util.function.Supplier;
 @ApiStatus.NonExtendable
 public interface Value<T> extends Supplier<@UnknownNullability T> {
     /**
-     * Represents a value for a property that does not accept null.
+     * Represents a value for a property that does not accept null; in other
+     * words, a value is <em>always</em> present.
      *
      * @see #of(Object)
      * @param <T> the property value type
      */
     @ApiStatus.NonExtendable
-    interface Required<T> extends Value<@NotNull T> {
+    interface Always<T> extends Value<@NotNull T> {
         /**
          * Gets the value in this wrapper.
          *
@@ -33,7 +34,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
         @NotNull T get();
 
         @Override
-        default @NotNull Required<T> toNotNull() {
+        default @NotNull Always<T> toNotNull() {
             return this;
         }
     }
@@ -75,7 +76,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
      *
      * @return a null-resistant wrapper or null
      */
-    @Nullable Value.Required<T> toNotNull();
+    @Nullable Value.Always<T> toNotNull();
 
     /**
      * Coaxes this value wrapper to one that accepts nulls.
@@ -89,7 +90,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
     /**
      * Checks if the value in this wrapper equals that in another wrapper.
      * <p>
-     * This method ignores differences in wrapper type ({@linkplain Required}
+     * This method ignores differences in wrapper type ({@linkplain Always}
      * and {@linkplain OrNull}).
      *
      * @param wrapper another wrapper
@@ -118,8 +119,8 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
      * @param <T> the value type
      * @return a value wrapper
      */
-    static <T> Value.Required<T> of(@NotNull T value) {
-        return new ValueImpl.RequiredImpl<>(value);
+    static <T> Value.Always<T> of(@NotNull T value) {
+        return new ValueImpl.AlwaysImpl<>(value);
     }
 
     /**

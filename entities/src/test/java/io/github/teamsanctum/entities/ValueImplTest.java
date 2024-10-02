@@ -18,13 +18,13 @@ class ValueImplTest {
     @Test
     void coax() {
         final String test = "test";
-        final Value.Required<String> required = Value.of(test);
+        final Value.Always<String> always = Value.of(test);
         final Value.OrNull<String> optional = Value.optional(test);
         // test identity
-        assertInstanceOf(Value.OrNull.class, required.toNullable());
-        assertInstanceOf(Value.Required.class, optional.toNotNull());
+        assertInstanceOf(Value.OrNull.class, always.toNullable());
+        assertInstanceOf(Value.Always.class, optional.toNotNull());
         // test deep equality
-        assertEquals(required.get(), required.toNullable().get());
+        assertEquals(always.get(), always.toNullable().get());
         assertEquals(optional.get(), optional.toNotNull().get());
     }
 
@@ -32,18 +32,18 @@ class ValueImplTest {
     void isSimilar() {
         final String test = "test";
         final String test2 = "test2";
-        final Value.Required<String> required = Value.of(test);
-        final Value.OrNull<String> optional = required.toNullable();
-        assertTrue(required.isSimilar(optional));
-        assertFalse(required.isSimilar(Value.of(test2)));
+        final Value.Always<String> always = Value.of(test);
+        final Value.OrNull<String> optional = always.toNullable();
+        assertTrue(always.isSimilar(optional));
+        assertFalse(always.isSimilar(Value.of(test2)));
     }
 
     @Test
     void isPresent() {
         final String test = "test";
-        final Value.Required<String> required = Value.of(test);
+        final Value.Always<String> always = Value.of(test);
         final Value.OrNull<String> optional = Value.optional(test);
-        assertTrue(required.isPresent());
+        assertTrue(always.isPresent());
         assertTrue(optional.isPresent());
         assertFalse(Value.empty().isPresent());
     }
@@ -51,9 +51,9 @@ class ValueImplTest {
     @Test
     void isEmpty() {
         final String test = "test";
-        final Value.Required<String> required = Value.of(test);
+        final Value.Always<String> always = Value.of(test);
         final Value.OrNull<String> optional = Value.optional(test);
-        assertFalse(required.isEmpty());
+        assertFalse(always.isEmpty());
         assertFalse(optional.isEmpty());
         assertTrue(Value.empty().isEmpty());
         assertTrue(Value.optional(null).isEmpty());
@@ -62,9 +62,9 @@ class ValueImplTest {
     @Test
     void eq() {
         final String test = "test";
-        final Value.Required<String> required = Value.of(test);
+        final Value.Always<String> always = Value.of(test);
         final Value.OrNull<String> optional = Value.optional(test);
-        assertEquals(required, Value.of(test));
+        assertEquals(always, Value.of(test));
         assertEquals(optional, Value.optional(test));
     }
 }

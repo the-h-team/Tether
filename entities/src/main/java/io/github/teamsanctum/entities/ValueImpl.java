@@ -17,8 +17,8 @@ abstract class ValueImpl <T> implements Value<T> {
         this.value = value;
     }
 
-    static final class RequiredImpl<T> extends ValueImpl<T> implements Required<T> {
-        RequiredImpl(@NotNull T value) {
+    static final class AlwaysImpl<T> extends ValueImpl<T> implements Always<T> {
+        AlwaysImpl(@NotNull T value) {
             super(value);
         }
 
@@ -44,7 +44,7 @@ abstract class ValueImpl <T> implements Value<T> {
 
         @Override
         public String toString() {
-            return "ValueImpl.RequiredImpl{" +
+            return "ValueImpl.AlwaysImpl{" +
                     "value=" + value +
                     '}';
         }
@@ -61,7 +61,7 @@ abstract class ValueImpl <T> implements Value<T> {
         }
 
         @Override
-        public @Nullable Required<T> toNotNull() {
+        public @Nullable Always<T> toNotNull() {
             return (value != null) ? Value.of(value) : null;
         }
 
