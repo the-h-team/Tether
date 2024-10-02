@@ -1,8 +1,8 @@
 package io.github.teamsanctum.entities;
 
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
+
+import java.util.Map;
 
 /**
  * An entity which may have attributes.
@@ -11,7 +11,8 @@ import org.jetbrains.annotations.NotNull;
  * @author ms5984
  */
 @ApiStatus.OverrideOnly
-public interface Entity {
+@FunctionalInterface
+public interface Entity extends EntityLike {
     /**
      * An entity with attributes that may be edited.
      *
@@ -26,5 +27,22 @@ public interface Entity {
          */
         @Contract("-> new")
         @NotNull Edits edit();
+    }
+
+    /**
+     * Gets a map view of the attributes of this entity.
+     * <p>
+     * Note that some {@linkplain Value Values} may block. For this, consider
+     * using
+     * {@linkplain java.util.concurrent.CompletableFuture#supplyAsync}.
+     *
+     * @return a map view of attributes
+     * @implSpec The map view should be read-only.
+     */
+    @NotNull Map<String, Value<? extends @UnknownNullability Object>> attributes();
+
+    @Override
+    default @NotNull Entity asEntity() {
+        return this;
     }
 }

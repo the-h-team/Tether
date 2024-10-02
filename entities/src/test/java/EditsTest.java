@@ -3,6 +3,7 @@ import io.github.teamsanctum.entities.StagedUpdate;
 import io.github.teamsanctum.entities.Value;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -34,6 +35,11 @@ class EditsTest {
 
     static class TestEntity implements Entity.Mutable {
         private String name = "bob";
+
+        @Override
+        public @NotNull Map<String, Value<? extends @UnknownNullability Object>> attributes() {
+            return Collections.singletonMap("name", Value.of(name));
+        }
 
         @Override
         public @NotNull Edits edit() {
