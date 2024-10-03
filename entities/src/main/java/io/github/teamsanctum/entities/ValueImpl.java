@@ -29,7 +29,7 @@ abstract class ValueImpl <T> implements Value<T> {
 
         @Override
         public @NotNull OrNull<T> toNullable() {
-            return Value.optional(value);
+            return Value.orNull(value);
         }
 
         @Override

@@ -42,7 +42,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
     /**
      * Represents a value for a property that accepts nulls.
      *
-     * @see #optional(Object)
+     * @see #orNull(Object)
      * @see #empty()
      * @param <T> the property value type
      */
@@ -131,7 +131,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
      * @param <T> the value type
      * @return a value wrapper
      */
-    static <T> Value.OrNull<T> optional(@Nullable T value) {
+    static <T> Value.OrNull<T> orNull(@Nullable T value) {
         return new ValueImpl.OrNullImpl<>(value);
     }
 
@@ -142,7 +142,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
      * @return a value wrapper
      */
     static <R> Value.OrNull<R> empty() {
-        return optional(null);
+        return orNull(null);
     }
 
     // Util (Predicates)
