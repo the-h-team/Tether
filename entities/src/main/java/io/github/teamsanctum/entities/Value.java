@@ -112,6 +112,7 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
      */
     boolean isEmpty();
 
+    // Factories
     /**
      * Wraps a value for a property whose values must be nonnull.
      *
@@ -142,5 +143,28 @@ public interface Value<T> extends Supplier<@UnknownNullability T> {
      */
     static <R> Value.OrNull<R> empty() {
         return optional(null);
+    }
+
+    // Util (Predicates)
+    /**
+     * Checks if a value wrapper <em>forbids</em> nulls; that is, it is a
+     * {@linkplain Value.Always}.
+     *
+     * @param wrapper a value wrapper
+     * @return true if the value wrapper forbids nulls
+     */
+    static boolean isAlways(Value<?> wrapper) {
+        return wrapper instanceof Always;
+    }
+
+    /**
+     * Checks if a value wrapper <em>allows</em> nulls; that is, it is a
+     * {@linkplain Value.OrNull}.
+     *
+     * @param wrapper a value wrapper
+     * @return true if the value wrapper allows nulls
+     */
+    static boolean isOrNull(Value<?> wrapper) {
+        return wrapper instanceof OrNull;
     }
 }
