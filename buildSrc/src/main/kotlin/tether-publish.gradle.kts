@@ -22,8 +22,24 @@ afterEvaluate {
     publishing {
         val publicationName = name
         publications.create<MavenPublication>(publicationName) {
+            // if are on an Actions runner, set up GitHub Packages
+            if (System.getenv("GITHUB_ACTIONS") == "true") {
+                repositories {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/the-h-team/Tether")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
+            }
             pom {
-                description.set(project.description!!)
+                description.set(
+                    project.description.takeIf { it != rootProject.description } ?:
+                    throw IllegalStateException("Set the project description in ${project.projectDir.name}/build.gradle.kts before activating publishing.")
+                )
                 url.set(project.properties["url"] as String)
                 inceptionYear.set(project.properties["inceptionYear"] as String)
                 organization {
@@ -34,6 +50,7 @@ afterEvaluate {
                     license {
                         name.set("Apache License 2.0")
                         url.set("https://opensource.org/licenses/Apache-2.0")
+                        distribution.set("repo")
                     }
                 }
                 developers {
