@@ -22,6 +22,19 @@ afterEvaluate {
     publishing {
         val publicationName = name
         publications.create<MavenPublication>(publicationName) {
+            // if are on an Actions runner, set up GitHub Packages
+            if (System.getenv("GITHUB_ACTIONS") == "true") {
+                repositories {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/the-h-team/Tether")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
+            }
             pom {
                 description.set(project.description!!)
                 url.set(project.properties["url"] as String)
