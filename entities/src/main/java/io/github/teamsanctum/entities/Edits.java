@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * @since 1.0.0
  * @author ms5984
  */
-public interface Edits {
+public interface Edits<T extends Entity.Mutable> {
     /**
      * Gets a map view of the edits in this utility.
      * <p>
@@ -37,5 +37,5 @@ public interface Edits {
      * @return a staging object
      */
     @Contract("_ -> new")
-    @NotNull StagedUpdate stage(@NotNull Entity.Mutable updating);
+    @NotNull StagedUpdate<T> stage(@NotNull T updating);
 }

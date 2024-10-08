@@ -26,7 +26,7 @@ public interface Entity extends EntityLike {
          * @return a new editing utility
          */
         @Contract("-> new")
-        @NotNull Edits edit();
+        @NotNull Edits<? extends Mutable> edit();
     }
 
     /**

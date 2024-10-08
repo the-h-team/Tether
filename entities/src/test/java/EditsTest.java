@@ -23,7 +23,7 @@ class EditsTest {
         assertEquals("bob", test.getName());
         // edit
         TestEntity.Edits edit = test.edit().setName(Value.of("alice"));
-        StagedUpdate stage = edit.stage(test);
+        StagedUpdate<?> stage = edit.stage(test);
         CompletableFuture<@NotNull Map<String, Object>> process = stage.process();
         // without error
         assertFalse(process.isCompletedExceptionally());
@@ -50,7 +50,7 @@ class EditsTest {
             return name;
         }
 
-        static class Edits implements io.github.teamsanctum.entities.Edits {
+        static class Edits implements io.github.teamsanctum.entities.Edits<TestEntity> {
             private final Map<String, Supplier<? extends @Nullable Object>> map = new HashMap<>();
 
             public Edits() {}
@@ -69,24 +69,24 @@ class EditsTest {
             }
 
             @Override
-            public @NotNull StagedUpdate stage(@NotNull Mutable updating) {
+            public @NotNull StagedUpdate<TestEntity> stage(@NotNull TestEntity updating) {
                 return new Staged(this, updating, UUID.randomUUID());
             }
         }
 
-        static class Staged implements StagedUpdate {
+        static class Staged implements StagedUpdate<TestEntity> {
             private final Edits edits;
-            private final Mutable entity;
+            private final TestEntity entity;
             private final UUID id;
 
-            Staged(Edits edits, Mutable entity, UUID id) {
+            Staged(Edits edits, TestEntity entity, UUID id) {
                 this.edits = edits;
                 this.entity = entity;
                 this.id = id;
             }
 
             @Override
-            public @NotNull Entity.Mutable getUpdatingEntity() {
+            public @NotNull TestEntity getUpdatingEntity() {
                 return entity;
             }
 
@@ -103,19 +103,16 @@ class EditsTest {
             @Override
             public @NotNull CompletableFuture<@NotNull Map<String, Object>> process() {
                 return CompletableFuture.supplyAsync(() -> {
-                    if (entity instanceof TestEntity) {
-                        final TestEntity entity = (TestEntity) this.entity;
-                        final String oldName = entity.name;
-                        Supplier<?> name = edits.getEdits().get("name");
-                        if (name instanceof Value.Always) {
-                            Object n = name.get();
-                            if (n instanceof String) {
-                                entity.name = (String) n;
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("old-name", oldName);
-                                map.put("name", n);
-                                return map;
-                            }
+                    final String oldName = entity.name;
+                    Supplier<?> name = edits.getEdits().get("name");
+                    if (name instanceof Value.Always) {
+                        Object n = name.get();
+                        if (n instanceof String) {
+                            entity.name = (String) n;
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("old-name", oldName);
+                            map.put("name", n);
+                            return map;
                         }
                     }
                     throw new IllegalArgumentException();

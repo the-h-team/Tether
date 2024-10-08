@@ -13,13 +13,13 @@ import java.util.concurrent.CompletableFuture;
  * @since 1.0.0
  * @author ms5984
  */
-public interface StagedUpdate {
+public interface StagedUpdate<T extends Entity.Mutable> {
     /**
      * Gets the entity that will be updated.
      *
      * @return the entity
      */
-    @NotNull Entity.Mutable getUpdatingEntity();
+    @NotNull T getUpdatingEntity();
 
     /**
      * Gets the unique ID for this update.
@@ -39,7 +39,7 @@ public interface StagedUpdate {
      * @return a copy of the staged edits
      */
     @Contract("-> new")
-    @NotNull Edits staged();
+    @NotNull Edits<T> staged();
 
     /**
      * Executes the update.
