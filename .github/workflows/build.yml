@@ -1,0 +1,29 @@
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Test Build and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  test-build:
+    name: "Test build"
+    uses: the-h-team/workflows/.github/workflows/gradle.yml@v1.2.2
+    with:
+      gradle_args: "build shadowJar"
+  cd:
+    name: "Deploy to GitHub Packages"
+    needs: test-build
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    uses: the-h-team/workflows/.github/workflows/gradle.yml@v1.2.2
+    with:
+      gradle_args: "shadowJar publish"
+      cache_save: false
